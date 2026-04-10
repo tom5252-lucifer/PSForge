@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Variables ─────────────────────────── */
+:root {
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+  /* Dark theme (default) */
+  --bg:        #0D1117;
+  --surface:   #161B27;
+  --surface2:  #1C2233;
+  --surface3:  #222840;
+  --border:    #252D42;
+  --border2:   #2E3858;
+  --text:      #D4DBF0;
+  --text2:     #90A0C0;
+  --muted:     #5A6A8A;
+  --muted2:    #7A8AAA;
+  --accent:    #4F7FFF;
+  --accent-s:  rgba(79,127,255,0.12);
+  --green:     #22C55E;
+  --green-s:   rgba(34,197,94,0.12);
+  --red:       #EF4444;
+  --red-s:     rgba(239,68,68,0.12);
+  --amber:     #F59E0B;
+  --amber-s:   rgba(245,158,11,0.12);
+}
+
+.light {
+  --bg:        #F4F6FB;
+  --surface:   #FFFFFF;
+  --surface2:  #F0F2F8;
+  --surface3:  #E8EBF5;
+  --border:    #D0D6E8;
+  --border2:   #B8C0D8;
+  --text:      #1A2040;
+  --text2:     #3A4A6A;
+  --muted:     #8A96B8;
+  --muted2:    #6A7898;
+  --accent:    #3B6FEF;
+  --accent-s:  rgba(59,111,239,0.10);
+  --green:     #16A34A;
+  --green-s:   rgba(22,163,74,0.10);
+  --red:       #DC2626;
+  --red-s:     rgba(220,38,38,0.10);
+  --amber:     #D97706;
+  --amber-s:   rgba(217,119,6,0.10);
+}
+
+/* ── Base ──────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbars ────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ── Animations ────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ── Utility ───────────────────────────────── */
+.font-mono { font-family: var(--font-mono) !important; }
+
+.animate-fade-in  { animation: fadeIn  0.2s ease-out; }
+.animate-slide-up { animation: slideUp 0.2s ease-out; }
+
+/* AI streaming shimmer */
+.ai-streaming::after {
+  content: '▋';
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+  color: var(--accent);
+  margin-left: 2px;
+}
+
+/* ── Monaco Editor overrides ───────────────── */
+.monaco-editor .margin { background: var(--surface2) !important; }
+.monaco-editor-background { background: var(--bg) !important; }
+
+/* ── Code blocks in AI responses ──────────── */
+.ai-content code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--surface3);
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: var(--accent);
+}
+.ai-content pre {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin: 6px 0;
+}
+.ai-content pre code {
+  background: transparent;
+  padding: 0;
+  color: var(--text);
+}
