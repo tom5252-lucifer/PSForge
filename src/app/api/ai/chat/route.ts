@@ -8,7 +8,7 @@ import OpenAI from 'openai'
 import { NextRequest } from 'next/server'
 
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.issk-or-v1-0704340f93042274c9ec111963f792d43548843a269a9c6e62e513872430f0c3,
 })
 
 export async function POST(req: NextRequest) {
