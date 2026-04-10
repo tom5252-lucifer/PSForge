@@ -14,7 +14,7 @@
     "react-dom": "^18.3.1",
     "@monaco-editor/react": "^4.6.0",
     "monaco-editor": "^0.50.0",
-    "anthropic": "^0.25.0",
+    "openai": "^4.52.0",
     "lucide-react": "^0.383.0",
     "clsx": "^2.1.1"
   },
