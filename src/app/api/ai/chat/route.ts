@@ -1,14 +1,14 @@
 // ─────────────────────────────────────────────
 // API Route: /api/ai/chat
-// Handles Claude API streaming calls
+// Handles OpenAI API streaming calls
 // Server-side only — API key never exposed
 // ─────────────────────────────────────────────
 
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 import { NextRequest } from 'next/server'
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
 })
 
 export async function POST(req: NextRequest) {
@@ -29,12 +29,18 @@ export async function POST(req: NextRequest) {
     // Build system prompt based on mode
     const system = systemPrompt || buildSystemPrompt(mode)
 
+    // Build messages array with system prompt prepended
+    const apiMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+      { role: 'system', content: system },
+      ...messages,
+    ]
+
     // Stream response
-    const stream = await client.messages.stream({
-      model:      'claude-sonnet-4-6',
+    const stream = await client.chat.completions.create({
+      model:      'gpt-4o',
       max_tokens: 1024,
-      system,
-      messages,
+      messages:   apiMessages,
+      stream:     true,
     })
 
     // Return as SSE stream
@@ -43,11 +49,9 @@ export async function POST(req: NextRequest) {
       async start(controller) {
         try {
           for await (const chunk of stream) {
-            if (
-              chunk.type === 'content_block_delta' &&
-              chunk.delta.type === 'text_delta'
-            ) {
-              const data = JSON.stringify({ text: chunk.delta.text })
+            const text = chunk.choices[0]?.delta?.content
+            if (text) {
+              const data = JSON.stringify({ text })
               controller.enqueue(encoder.encode(`data: ${data}\n\n`))
             }
           }
